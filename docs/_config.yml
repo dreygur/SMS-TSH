@@ -4,4 +4,5 @@ description: An api module in python to integrate with the DianaHost Bulk SMS se
 avatar: https://raw.githubusercontent.com/barryclark/jekyll-now/master/images/jekyll-logo.png
 show_downloads: true
 google_analytics: UA-114697093-1
-disqus: h-y-b-r-l
+layout: default
+comments: true
