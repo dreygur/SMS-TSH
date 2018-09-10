@@ -1,6 +1,6 @@
 theme: jekyll-theme-cayman
 title: SMS-TSH
-description: Rakibul Yeasin Totul
+description: An api module in python to integrate with the DianaHost Bulk SMS service.
 avatar: https://raw.githubusercontent.com/barryclark/jekyll-now/master/images/jekyll-logo.png
 show_downloads: true
 google_analytics: UA-114697093-1
