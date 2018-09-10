@@ -1,4 +1,4 @@
-# SMS TSH
+# SMS TSH  [![Build Status](https://travis-ci.org/rytotul/SMS-TSH.svg?branch=master)](https://travis-ci.org/rytotul/SMS-TSH)
 An api module in python to integrate with the DianaHost Bulk SMS service
 
 - For **'Help'** type _'python3 app.py -h'_ or _'python3 sms.py --help'_ in your terminal
