@@ -1,5 +1,9 @@
-language: python
+os: linux
+dist: trusty
+group: stable
+sudo: false
 
+language: python
 python: 3.6
 
 script:
