@@ -1,7 +1,7 @@
 ---
 title: SMS-TSH
 layout: default
-description: Rakibul Yeasin Totul
+description: An api module in python to integrate with the DianaHost Bulk SMS service.
 ---
 
 # SMS-TSH   [![Build Status](https://travis-ci.org/rytotul/SMS-TSH.svg?branch=master)](https://travis-ci.org/rytotul/SMS-TSH)
