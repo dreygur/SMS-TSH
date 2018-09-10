@@ -1,7 +1,7 @@
 theme: jekyll-theme-cayman
 title: SMS-TSH
 description: An api module in python to integrate with the DianaHost Bulk SMS service.
-avatar: https://raw.githubusercontent.com/barryclark/jekyll-now/master/images/jekyll-logo.png
+avatar: https://raw.githubusercontent.com/jekyll/jekyll/master/docs/favicon.ico
 show_downloads: true
 google_analytics: UA-114697093-1
 layout: default
