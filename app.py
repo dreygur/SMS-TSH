@@ -2,7 +2,7 @@
 
 ########################################################################
 #   SMS API - Python 3.6
-#   Copyright (C) 2018 by Rakibul Yeasin Totul
+#   Copyright (C) 2019 by Rakibul Yeasin Totul
 #   URI      - https://www.rytotul.xyz/about
 #   Facebook - https://www.facebook.com/rytotul
 #   Github   - https://www.github.com/rytotul
@@ -20,7 +20,7 @@ import getpass
 from optparse import OptionParser
 from urllib import request as req
 from urllib import parse as prs
-import untangle as ut
+#import untangle as ut
 
 # Preventig from writing bytecodes
 sys.dont_write_bytecode = True
@@ -33,6 +33,7 @@ parser.add_option("-t", "--text", help="To send a short SMS", action="store_true
 parser.add_option("-l", "--long", help="To send a long SMS", action="store_true")
 parser.add_option("-r", "--report", help="For finding Delivery Reports", action="store_true")
 parser.add_option("-b", "--balance", help="Command to check the current balance", action="store_true")
+parser.add_option("-i", "--id", help="User ID(s)", action="store_true")
 
 # Gathering all parser-options in a variable
 (args, _) = parser.parse_args()
@@ -49,6 +50,7 @@ class SMS_API:
     def __init__(self):
         self._username   = str(input(bcls.OKGREEN + "\tYour Username: " + bcls.ENDC))
         self._password   = str(getpass.getpass(bcls.OKGREEN + "\tPassword: " + bcls.ENDC))
+        self.sms_id      = '3706682'
 
         # Base domain name
         _base_domain = 'esms.dianahost.com'
@@ -70,14 +72,17 @@ class SMS_API:
         # Send SMS API
         self._api_sms_url = 'http://{0}/smsapi'.format(_base_domain)
 
+        # UserID Retrieve API
+        self._api_userid_url = 'http://{0}/miscapi/{1}/getDLR/{2}'.format(_base_domain, self._api_key, self.sms_id)
+
     # Convert the xml to Dictionary
-    def res_clean(self, response):
-        obj = ut.parse(response)
-        return  obj.dlr.message.MSISDN + '\n' + \
-                obj.dlr.message.SMS + '\n' + \
-                obj.dlr.message.SMSSent + '\n' + \
-                obj.dlr.message.DLRReceived + '\n' + \
-                obj.dlr.message.DLRStatus + '\n'
+    # def res_clean(self, response):
+    #     obj = ut.parse(response)
+    #     return  obj.dlr.message.MSISDN + '\n' + \
+    #             obj.dlr.message.SMS + '\n' + \
+    #             obj.dlr.message.SMSSent + '\n' + \
+    #             obj.dlr.message.DLRReceived + '\n' + \
+    #             obj.dlr.message.DLRStatus + '\n'
 
     # We can retrieve our remaining credit balance with this function
     def balance(self):
@@ -110,6 +115,7 @@ class SMS_API:
         return response
 
     def delivery_report(self, delivery_id=''):
+        # Delivery Report
         if delivery_id == '':
             url = self._api_delivery_report_url + 'getAll'
             result = req.urlopen(url)
@@ -120,13 +126,19 @@ class SMS_API:
             #response = self.res_clean(response.decode('UTF-8'))
             return response
         else:
-            url = self.self._api_delivery_report_url + delivery_id
+            url = self._api_delivery_report_url + delivery_id
             result = req.urlopen(url)
             # converting the result to string
             response = result.read()
             # Converting from bytes to string
             response = response.decode('UTF-8')
             return response
+    
+    def get_id(self):
+        url = self._api_delivery_report_url
+        result = req.urlopen(url)
+        response = result.read().decode('UTF-8')
+        return response
 
 class Main_Class:
     def __init__(self):
@@ -136,7 +148,7 @@ class Main_Class:
     def banner(self):
         # Application Banner
         os.system('clear')
-        lol = bcls.OKGREEN + """
+        lol = bcls.OKGREEN +  """
 
             .dP"Y8 8b    d8 .dP"Y8     888888 .dP"Y8 88  88 
             `Ybo." 88b  d88 `Ybo."       88   `Ybo." 88  88 
@@ -144,7 +156,7 @@ class Main_Class:
             8bodP' 88 YY 88 8bodP'       88   8bodP' 88  88 
 
     \t----------------------------------------------------------
-            Version: 0.0.1 (Alpha)
+            Version: 0.0.3 (Alpha)
             For help: -h
             Bug report: rytotul@gmail.com
     \t----------------------------------------------------------
@@ -195,6 +207,26 @@ class Main_Class:
 
         return response
 
+# The function to show help message
+def help():
+    help_message = bcls.OKGREEN +  """
+        No Arguments Passed!
+        PLease See the help menu below to know how to use this script.
+
+        Usage: app.py [options]
+
+        Options:
+        -h, --help         Show this help message and exit
+        -t, --text         To send a short SMS
+        -l, --long         To send a long SMS
+        -r, --report       For finding Delivery Reports
+        -b, --balance      Command to check the current balance
+        -i, --id           Get the Sender ID(s)
+        """ + bcls.ENDC
+
+    print(help_message)
+    sys.exit()
+
 #The main function starts...
 def main():
     """ The Main Function """
@@ -230,26 +262,31 @@ def main():
         bal = api.delivery_report(delivery_id)
         print('\n\t{0}\n'.format(bal))
 
+    if args.id is True:
+        user_id = api.get_id()
+        print('{0}'.format(user_id))
+
 
 # Starting the program from here...
 if __name__ == "__main__":
     if len(sys.argv) < 2:
         # Show Help if no arguement is passed
         # not implemented yet
-        sys.balance = True
-    try:
-        # Calling main() function
-        main()
+        help()
+    else:
+        try:
+            # Calling main() function
+            main()
 
-    except IOError:
-        # Escaping Network connection Error
-        print (bcls.FAIL + '\n\tNot connected to Internet. Connect to internet first...'+ bcls.ENDC)
-        sys.exit()
-        pass
+        except IOError:
+            # Escaping Network connection Error
+            print (bcls.FAIL + '\n\tNot connected to Internet. Connect to internet first...\n'+ bcls.ENDC)
+            sys.exit()
+            pass
 
-    except KeyboardInterrupt:
-        # Exit when Keyboard Interrupt happens
-        print(bcls.WARNING + '\n\tKeyboard Interrupt Occured. Exiting...\n' + bcls.ENDC)
-        sys.exit()
+        except KeyboardInterrupt:
+            # Exit when Keyboard Interrupt happens
+            print(bcls.WARNING + '\n\tKeyboard Interrupt Occured. Exiting...\n' + bcls.ENDC)
+            sys.exit()
 
 # end..............................................
