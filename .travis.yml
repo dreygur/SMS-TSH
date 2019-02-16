@@ -8,4 +8,4 @@ python: 3.6
 
 script:
   - pip install untangle
-  - python3 app.py -b
+  - python3 app.py -b > tests/input.txt
